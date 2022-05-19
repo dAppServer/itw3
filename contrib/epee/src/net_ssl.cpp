@@ -572,6 +572,30 @@ bool ssl_options_t::handshake(
   return true;
 }
 
+std::string get_hr_ssl_fingerprint(const X509 *cert, const EVP_MD *fdig)
+{
+  unsigned int j;
+  unsigned int n;
+  unsigned char md[EVP_MAX_MD_SIZE];
+  std::string fingerprint;
+
+  if (!X509_digest(cert, fdig, md, &n))
+  {
+    const unsigned long ssl_err_val = static_cast<int>(ERR_get_error());
+    const boost::system::error_code ssl_err_code = boost::asio::error::ssl_errors(static_cast<int>(ssl_err_val));
+    MERROR("Failed to create SSL fingerprint: " << ERR_reason_error_string(ssl_err_val));
+    throw boost::system::system_error(ssl_err_code, ERR_reason_error_string(ssl_err_val));
+  }
+  fingerprint.resize(n * 3 - 1);
+  char *out = &fingerprint[0];
+  for (j = 0; j < n; ++j)
+  {
+    snprintf(out, 3 + (j + 1 < n), "%02X%s", md[j], (j + 1 == n) ? "" : ":");
+    out += 3;
+  }
+  return fingerprint;
+}
+
 bool ssl_support_from_string(ssl_support_t &ssl, boost::string_ref s)
 {
   if (s == "enabled")
