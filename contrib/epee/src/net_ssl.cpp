@@ -660,6 +660,29 @@ boost::system::error_code store_ssl_keys(boost::asio::ssl::context& ssl, const b
     return boost::asio::error::ssl_errors(ERR_get_error());
   if (std::fclose(file.release()) != 0)
     return {errno, boost::system::system_category()};
+
+  // write SHA-256 fingerprint file
+  const boost::filesystem::path fp_file{base.string() + ".fingerprint"};
+  file.reset(std::fopen(fp_file.string().c_str(), "w"));
+  if (!file)
+    return {errno, boost::system::system_category()};
+  const auto fp_perms = (boost::filesystem::owner_read | boost::filesystem::group_read | boost::filesystem::others_read);
+  boost::filesystem::permissions(fp_file, fp_perms, error);
+  if (error)
+    return error;
+  try
+  {
+    const std::string fingerprint = get_hr_ssl_fingerprint(ssl_cert);
+    if (fingerprint.length() != fwrite(fingerprint.c_str(), sizeof(char), fingerprint.length(), file.get()))
+      return {errno, boost::system::system_category()};
+  }
+  catch (const boost::system::system_error& fperr)
+  {
+    return fperr.code();
+  }
+  if (std::fclose(file.release()) != 0)
+    return {errno, boost::system::system_category()};
+
   return error;
 }
 
