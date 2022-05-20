@@ -596,6 +596,31 @@ std::string get_hr_ssl_fingerprint(const X509 *cert, const EVP_MD *fdig)
   return fingerprint;
 }
 
+std::string get_hr_ssl_fingerprint_from_file(const std::string& cert_path, const EVP_MD *fdig) {
+  // Open file for reading
+  FILE* fp = fopen(cert_path.c_str(), "r");
+  if (!fp)
+  {
+    const boost::system::error_code err_code(errno, boost::system::system_category());
+    throw boost::system::system_error(err_code, "Failed to open certificate file '" + cert_path + "'");
+  }
+  std::unique_ptr<FILE, decltype(&fclose)> file(fp, &fclose);
+
+  // Extract certificate structure from file
+  X509* ssl_cert_handle = PEM_read_X509(file.get(), NULL, NULL, NULL);
+  if (!ssl_cert_handle) {
+    std::cout << "Exit new boi" << std::endl;
+    const unsigned long ssl_err_val = static_cast<int>(ERR_get_error());
+    const boost::system::error_code ssl_err_code = boost::asio::error::ssl_errors(static_cast<int>(ssl_err_val));
+    MERROR("OpenSSL error occurred while loading certificate at '" + cert_path + "'");
+    throw boost::system::system_error(ssl_err_code, ERR_reason_error_string(ssl_err_val));
+  }
+  std::unique_ptr<X509, decltype(&X509_free)> ssl_cert(ssl_cert_handle, &X509_free);
+
+  // Get the fingerprint from X509 structure
+  return get_hr_ssl_fingerprint(ssl_cert.get(), fdig);
+}
+
 bool ssl_support_from_string(ssl_support_t &ssl, boost::string_ref s)
 {
   if (s == "enabled")
