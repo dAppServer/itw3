@@ -1,0 +1,22 @@
+version: "3"
+services:
+  itw3-chain-main:
+    image: lthn/itw3:testnet
+    network_mode: host
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      - ~/itw3/data:/home/itw3/data
+      - ~/itw3/conf:/home/itw3/conf
+      - ~/itw3/wallets:/home/itw3/wallets
+    ports:
+      - "48772:48772"
+      - "48782:48772"
+      - "48792:48792"
+      - "38772:38772"
+      - "38782:38782"
+      - "38792:38792"
+

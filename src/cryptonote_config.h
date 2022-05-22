@@ -1,5 +1,7 @@
+// Copyright (c) 2022-2022, iTw3
+// Copyright (c) 2017-2022, LetheanVPN
 // Copyright (c) 2014-2022, The Monero Project
-// 
+//
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are
@@ -157,7 +159,8 @@
 
 #define RPC_IP_FAILS_BEFORE_BLOCK                       3
 
-#define CRYPTONOTE_NAME                         "bitmonero"
+#define CRYPTONOTE_NAME                         "iTw3"
+#define OLD_CRYPTONOTE_NAME                     "intensecoin" // obsolete: added for migration
 #define CRYPTONOTE_BLOCKCHAINDATA_FILENAME      "data.mdb"
 #define CRYPTONOTE_BLOCKCHAINDATA_LOCK_FILENAME "lock.mdb"
 #define P2P_NET_DATA_FILENAME                   "p2pstate.bin"
@@ -214,136 +217,137 @@ namespace config
   uint64_t const DEFAULT_DUST_THRESHOLD = ((uint64_t)2000000000); // 2 * pow(10, 9)
   uint64_t const BASE_REWARD_CLAMP_THRESHOLD = ((uint64_t)100000000); // pow(10, 8)
 
-  uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 18;
-  uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 19;
-  uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 42;
-  uint16_t const P2P_DEFAULT_PORT = 18080;
-  uint16_t const RPC_DEFAULT_PORT = 18081;
-  uint16_t const ZMQ_RPC_DEFAULT_PORT = 18082;
-  boost::uuids::uuid const NETWORK_ID = { {
-      0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x10
-    } }; // Bender's nightmare
-  std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
-  uint32_t const GENESIS_NONCE = 10000;
-
-  // Hash domain separators
-  const char HASH_KEY_BULLETPROOF_EXPONENT[] = "bulletproof";
-  const char HASH_KEY_BULLETPROOF_PLUS_EXPONENT[] = "bulletproof_plus";
-  const char HASH_KEY_BULLETPROOF_PLUS_TRANSCRIPT[] = "bulletproof_plus_transcript";
-  const char HASH_KEY_RINGDB[] = "ringdsb";
-  const char HASH_KEY_SUBADDRESS[] = "SubAddr";
-  const unsigned char HASH_KEY_ENCRYPTED_PAYMENT_ID = 0x8d;
-  const unsigned char HASH_KEY_WALLET = 0x8c;
-  const unsigned char HASH_KEY_WALLET_CACHE = 0x8d;
-  const unsigned char HASH_KEY_RPC_PAYMENT_NONCE = 0x58;
-  const unsigned char HASH_KEY_MEMORY = 'k';
-  const unsigned char HASH_KEY_MULTISIG[] = {'M', 'u', 'l', 't' , 'i', 's', 'i', 'g', 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-  const unsigned char HASH_KEY_MULTISIG_KEY_AGGREGATION[] = "Multisig_key_agg";
-  const unsigned char HASH_KEY_TXPROOF_V2[] = "TXPROOF_V2";
-  const unsigned char HASH_KEY_CLSAG_ROUND[] = "CLSAG_round";
-  const unsigned char HASH_KEY_CLSAG_AGG_0[] = "CLSAG_agg_0";
-  const unsigned char HASH_KEY_CLSAG_AGG_1[] = "CLSAG_agg_1";
-  const char HASH_KEY_MESSAGE_SIGNING[] = "MoneroMessageSignature";
-  const unsigned char HASH_KEY_MM_SLOT = 'm';
-
-  // Multisig
-  const uint32_t MULTISIG_MAX_SIGNERS{16};
-
-  namespace testnet
-  {
-    uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 53;
-    uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 54;
-    uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 63;
-    uint16_t const P2P_DEFAULT_PORT = 28080;
-    uint16_t const RPC_DEFAULT_PORT = 28081;
-    uint16_t const ZMQ_RPC_DEFAULT_PORT = 28082;
+    uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 0xfb;
+    uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 0x81;
+    uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 0x6af8;
+    uint16_t const P2P_DEFAULT_PORT = 48772;
+    uint16_t const RPC_DEFAULT_PORT = 48782;
+    uint16_t const ZMQ_RPC_DEFAULT_PORT = 48792;
     boost::uuids::uuid const NETWORK_ID = { {
-        0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x11
-      } }; // Bender's daydream
-    std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
-    uint32_t const GENESIS_NONCE = 10001;
-  }
+                                                    0x8c, 0x40, 0x3d, 0x04, 0x8f, 0x82, 0x2c, 0x3d, 0x82, 0x5f, 0x2c, 0x1a, 0x44, 0x32, 0x7d, 0x82
+                                            } };
+    std::string const GENESIS_TX = "013c01ff0001af9ea896c605029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd0880712101e444827ebec7bfe1938c8505128cbcf59343e9651afb0893d3d664f560fd216f";
+    uint32_t const GENESIS_NONCE = 70;
 
-  namespace stagenet
-  {
-    uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 24;
-    uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 25;
-    uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 36;
-    uint16_t const P2P_DEFAULT_PORT = 38080;
-    uint16_t const RPC_DEFAULT_PORT = 38081;
-    uint16_t const ZMQ_RPC_DEFAULT_PORT = 38082;
-    boost::uuids::uuid const NETWORK_ID = { {
-        0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x12
-      } }; // Bender's daydream
-    std::string const GENESIS_TX = "013c01ff0001ffffffffffff0302df5d56da0c7d643ddd1ce61901c7bdc5fb1738bfe39fbe69c28a3a7032729c0f2101168d0c4ca86fb55a4cf6a36d31431be1c53a3bd7411bb24e8832410289fa6f3b";
-    uint32_t const GENESIS_NONCE = 10002;
-  }
+    uint32_t const GENESIS_TIMESTAMP = 1502835881;
+
+    // Hash domain separators
+    const char HASH_KEY_BULLETPROOF_EXPONENT[] = "bulletproof";
+    const char HASH_KEY_BULLETPROOF_PLUS_EXPONENT[] = "bulletproof_plus";
+    const char HASH_KEY_BULLETPROOF_PLUS_TRANSCRIPT[] = "bulletproof_plus_transcript";
+    const char HASH_KEY_RINGDB[] = "ringdsb";
+    const char HASH_KEY_SUBADDRESS[] = "SubAddr";
+    const unsigned char HASH_KEY_ENCRYPTED_PAYMENT_ID = 0x8d;
+    const unsigned char HASH_KEY_WALLET = 0x8c;
+    const unsigned char HASH_KEY_WALLET_CACHE = 0x8d;
+    const unsigned char HASH_KEY_RPC_PAYMENT_NONCE = 0x58;
+    const unsigned char HASH_KEY_MEMORY = 'k';
+    const unsigned char HASH_KEY_MULTISIG[] = {'M', 'u', 'l', 't' , 'i', 's', 'i', 'g', 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    const unsigned char HASH_KEY_MULTISIG_KEY_AGGREGATION[] = "Multisig_key_agg";
+    const unsigned char HASH_KEY_TXPROOF_V2[] = "TXPROOF_V2";
+    const unsigned char HASH_KEY_CLSAG_ROUND[] = "CLSAG_round";
+    const unsigned char HASH_KEY_CLSAG_AGG_0[] = "CLSAG_agg_0";
+    const unsigned char HASH_KEY_CLSAG_AGG_1[] = "CLSAG_agg_1";
+    const char HASH_KEY_MESSAGE_SIGNING[] = "iTw3MessageSignature";
+    const unsigned char HASH_KEY_MM_SLOT = 'm';
+
+    // Multisig
+    const uint32_t MULTISIG_MAX_SIGNERS{16};
+
+    namespace testnet
+    {
+        uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 0x629f;
+        uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 0xea1;
+        uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 0x7eaf7;
+        uint16_t const P2P_DEFAULT_PORT = 38772;
+        uint16_t const RPC_DEFAULT_PORT = 38782;
+        uint16_t const ZMQ_RPC_DEFAULT_PORT = 38792;
+        boost::uuids::uuid const NETWORK_ID = { {
+                                                        0x8c, 0x40, 0x3d, 0x04, 0x8f, 0x82, 0x2c, 0x3d, 0x82, 0x5f, 0x2c, 0x1a, 0x44, 0x32, 0x7d, 0x83 } }; // Bender's daydream
+        std::string const GENESIS_TX = "013c01ff0001af9ea896c605029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd0880712101b7ee91be2ade5d4cd0b3c832d238081e380b6243bb5d4eb32a8ea10eac516af5";
+        uint32_t const GENESIS_NONCE = 10001;
+    }
+
+    namespace stagenet
+    {
+        uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 24;
+        uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX = 25;
+        uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX = 36;
+        uint16_t const P2P_DEFAULT_PORT = 38080;
+        uint16_t const RPC_DEFAULT_PORT = 38081;
+        uint16_t const ZMQ_RPC_DEFAULT_PORT = 38082;
+        boost::uuids::uuid const NETWORK_ID = { {
+                                                        0x12 ,0x30, 0xF1, 0x71 , 0x61, 0x04 , 0x41, 0x61, 0x17, 0x31, 0x00, 0x82, 0x16, 0xA1, 0xA1, 0x12
+                                                } }; // Bender's daydream
+        std::string const GENESIS_TX = "013c01ff0001ffffffffffff0302df5d56da0c7d643ddd1ce61901c7bdc5fb1738bfe39fbe69c28a3a7032729c0f2101168d0c4ca86fb55a4cf6a36d31431be1c53a3bd7411bb24e8832410289fa6f3b";
+        uint32_t const GENESIS_NONCE = 10002;
+    }
 }
 
 namespace cryptonote
 {
-  enum network_type : uint8_t
-  {
-    MAINNET = 0,
-    TESTNET,
-    STAGENET,
-    FAKECHAIN,
-    UNDEFINED = 255
-  };
-  struct config_t
-  {
-    uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX;
-    uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX;
-    uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX;
-    uint16_t const P2P_DEFAULT_PORT;
-    uint16_t const RPC_DEFAULT_PORT;
-    uint16_t const ZMQ_RPC_DEFAULT_PORT;
-    boost::uuids::uuid const NETWORK_ID;
-    std::string const GENESIS_TX;
-    uint32_t const GENESIS_NONCE;
-  };
-  inline const config_t& get_config(network_type nettype)
-  {
-    static const config_t mainnet = {
-      ::config::CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX,
-      ::config::CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX,
-      ::config::CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX,
-      ::config::P2P_DEFAULT_PORT,
-      ::config::RPC_DEFAULT_PORT,
-      ::config::ZMQ_RPC_DEFAULT_PORT,
-      ::config::NETWORK_ID,
-      ::config::GENESIS_TX,
-      ::config::GENESIS_NONCE
-    };
-    static const config_t testnet = {
-      ::config::testnet::CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX,
-      ::config::testnet::CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX,
-      ::config::testnet::CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX,
-      ::config::testnet::P2P_DEFAULT_PORT,
-      ::config::testnet::RPC_DEFAULT_PORT,
-      ::config::testnet::ZMQ_RPC_DEFAULT_PORT,
-      ::config::testnet::NETWORK_ID,
-      ::config::testnet::GENESIS_TX,
-      ::config::testnet::GENESIS_NONCE
-    };
-    static const config_t stagenet = {
-      ::config::stagenet::CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX,
-      ::config::stagenet::CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX,
-      ::config::stagenet::CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX,
-      ::config::stagenet::P2P_DEFAULT_PORT,
-      ::config::stagenet::RPC_DEFAULT_PORT,
-      ::config::stagenet::ZMQ_RPC_DEFAULT_PORT,
-      ::config::stagenet::NETWORK_ID,
-      ::config::stagenet::GENESIS_TX,
-      ::config::stagenet::GENESIS_NONCE
-    };
-    switch (nettype)
+    enum network_type : uint8_t
     {
-      case MAINNET: return mainnet;
-      case TESTNET: return testnet;
-      case STAGENET: return stagenet;
-      case FAKECHAIN: return mainnet;
-      default: throw std::runtime_error("Invalid network type");
-    }
-  };
+        MAINNET = 0,
+        TESTNET,
+        STAGENET,
+        FAKECHAIN,
+        UNDEFINED = 255
+    };
+    struct config_t
+    {
+        uint64_t const CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX;
+        uint64_t const CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX;
+        uint64_t const CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX;
+        uint16_t const P2P_DEFAULT_PORT;
+        uint16_t const RPC_DEFAULT_PORT;
+        uint16_t const ZMQ_RPC_DEFAULT_PORT;
+        boost::uuids::uuid const NETWORK_ID;
+        std::string const GENESIS_TX;
+        uint32_t const GENESIS_NONCE;
+    };
+    inline const config_t& get_config(network_type nettype)
+    {
+        static const config_t mainnet = {
+                ::config::CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX,
+                ::config::CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX,
+                ::config::CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX,
+                ::config::P2P_DEFAULT_PORT,
+                ::config::RPC_DEFAULT_PORT,
+                ::config::ZMQ_RPC_DEFAULT_PORT,
+                ::config::NETWORK_ID,
+                ::config::GENESIS_TX,
+                ::config::GENESIS_NONCE
+        };
+        static const config_t testnet = {
+                ::config::testnet::CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX,
+                ::config::testnet::CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX,
+                ::config::testnet::CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX,
+                ::config::testnet::P2P_DEFAULT_PORT,
+                ::config::testnet::RPC_DEFAULT_PORT,
+                ::config::testnet::ZMQ_RPC_DEFAULT_PORT,
+                ::config::testnet::NETWORK_ID,
+                ::config::testnet::GENESIS_TX,
+                ::config::testnet::GENESIS_NONCE
+        };
+        static const config_t stagenet = {
+                ::config::stagenet::CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX,
+                ::config::stagenet::CRYPTONOTE_PUBLIC_INTEGRATED_ADDRESS_BASE58_PREFIX,
+                ::config::stagenet::CRYPTONOTE_PUBLIC_SUBADDRESS_BASE58_PREFIX,
+                ::config::stagenet::P2P_DEFAULT_PORT,
+                ::config::stagenet::RPC_DEFAULT_PORT,
+                ::config::stagenet::ZMQ_RPC_DEFAULT_PORT,
+                ::config::stagenet::NETWORK_ID,
+                ::config::stagenet::GENESIS_TX,
+                ::config::stagenet::GENESIS_NONCE
+        };
+        switch (nettype)
+        {
+            case MAINNET: return mainnet;
+            case TESTNET: return testnet;
+            case STAGENET: return stagenet;
+            case FAKECHAIN: return mainnet;
+            default: throw std::runtime_error("Invalid network type");
+        }
+    };
 }

@@ -1,66 +1,77 @@
-# Multistage docker build, requires docker 17.05
+# syntax=docker/dockerfile:1
+FROM lthn/build:compile as builder
 
-# builder stage
-FROM ubuntu:20.04 as builder
-
-RUN set -ex && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends --yes install \
-        automake \
-        autotools-dev \
-        bsdmainutils \
-        build-essential \
-        ca-certificates \
-        ccache \
-        cmake \
-        curl \
-        git \
-        libtool \
-        pkg-config \
-        gperf
-
+ARG IMG_PREFIX=lthn
+ARG THREADS=2
+ARG TARGET=x86_64-unknown-linux-gnu
 WORKDIR /src
 COPY . .
+COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /src/contrib/depends
 
-ARG NPROC
 RUN set -ex && \
     git submodule init && git submodule update && \
-    rm -rf build && \
-    if [ -z "$NPROC" ] ; \
-    then make -j$(nproc) depends target=x86_64-linux-gnu ; \
-    else make -j$NPROC depends target=x86_64-linux-gnu ; \
+    if [ -z "${THREADS}" ] ; \
+    then make -j$(nproc) depends target=${TARGET} ; \
+    else make -j${THREADS} depends target=${TARGET} ; \
     fi
 
 # runtime stage
-FROM ubuntu:20.04
+FROM debian:bullseye as container
+
+RUN adduser --system --group --disabled-password itw3 && \
+	mkdir -p /wallet /home/itw3 && \
+	chown -R itw3:itw3 /home/itw3 && \
+	chown -R itw3:itw3 /wallet
 
 RUN set -ex && \
     apt-get update && \
     apt-get --no-install-recommends --yes install ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt
-COPY --from=builder /src/build/x86_64-linux-gnu/release/bin /usr/local/bin/
 
-# Create monero user
-RUN adduser --system --group --disabled-password monero && \
-	mkdir -p /wallet /home/monero/.bitmonero && \
-	chown -R monero:monero /home/monero/.bitmonero && \
-	chown -R monero:monero /wallet
 
-# Contains the blockchain
-VOLUME /home/monero/.bitmonero
+COPY --from=builder --chmod=0777 --chown=itw3:itw3 /src/build/${TARGET}/release/bin /usr/local/bin/
 
-# Generate your wallet via accessing the container and run:
-# cd /wallet
-# monero-wallet-cli
-VOLUME /wallet
+# Create iTw3 user
+RUN adduser --system --group --disabled-password itw3 && \
+	mkdir -p /home/itw3/wallet && \
+	chown -R itw3:itw3 /home/itw3/wallet
 
-EXPOSE 18080
-EXPOSE 18081
+# iTw3 User Folder
+VOLUME /home/itw3
+VOLUME /home/itw3/wallet
+
+ENV LOG_LEVEL 0
 
 # switch to user monero
-USER monero
+USER itw3
 
-ENTRYPOINT ["monerod"]
-CMD ["--p2p-bind-ip=0.0.0.0", "--p2p-bind-port=18080", "--rpc-bind-ip=0.0.0.0", "--rpc-bind-port=18081", "--non-interactive", "--confirm-external-bind"]
+# P2P live + testnet
+ENV P2P_BIND_IP 0.0.0.0
+ENV P2P_BIND_PORT 48772
+ENV TEST_P2P_BIND_PORT 38772
+
+# RPC live + testnet
+ENV RPC_BIND_IP 0.0.0.0
+ENV RPC_BIND_PORT 48782
+ENV TEST_RPC_BIND_PORT 38782
+ENV DATA_DIR /home/itw3/data
+ENV TEST_DATA_DIR /home/itw3/data/testnet
+
+RUN mkdir -p ${TEST_DATA_DIR}
+
+EXPOSE 48782
+EXPOSE 48772
+EXPOSE 38772
+EXPOSE 38782
+
+ENTRYPOINT ["itw3d", "--non-interactive"]
+#CMD , "--confirm-external-bind", "--log-level=${LOG_LEVEL}",
+#    "--data-dir=${DATA_DIR}", "--testnet-data-dir=${TEST_DATA_DIR}",
+#    "--rpc-bind-ip=${RPC_BIND_IP}","--p2p-bind-ip=${P2P_BIND_IP}",
+#    "--p2p-bind-port=${P2P_BIND_PORT}", "--testnet-p2p-bind-port=${TEST_P2P_BIND_PORT}",
+#    "--rpc-bind-port=${RPC_BIND_PORT}", "--testnet-rpc-bind-port=${TEST_RPC_BIND_PORT}"
+#
+
+
 

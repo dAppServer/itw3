@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="itw3-blockchain-export" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="--testnet" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="iTw3" TARGET_NAME="blockchain_export" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="iTw3" RUN_TARGET_NAME="blockchain_export">
+    <method v="2">
+      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+    </method>
+  </configuration>
+</component>
