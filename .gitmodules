@@ -1,3 +1,6 @@
+[submodule "external/miniupnp"]
+	path = external/miniupnp
+	url = https://github.com/miniupnp/miniupnp
 [submodule "external/rapidjson"]
 	path = external/rapidjson
 	url = https://github.com/Tencent/rapidjson
@@ -11,6 +14,3 @@
 	path = external/supercop
 	url = https://github.com/monero-project/supercop
 	branch = monero
-[submodule "external/miniupnp"]
-	path = external/miniupnp
-	url = https://github.com/miniupnp/miniupnp.git
