@@ -60,13 +60,7 @@ EXPOSE 48772
 EXPOSE 38772
 EXPOSE 38782
 
-ENTRYPOINT ["itw3d", "--non-interactive"]
-#CMD , "--confirm-external-bind", "--log-level=${LOG_LEVEL}",
-#    "--data-dir=${DATA_DIR}", "--testnet-data-dir=${TEST_DATA_DIR}",
-#    "--rpc-bind-ip=${RPC_BIND_IP}","--p2p-bind-ip=${P2P_BIND_IP}",
-#    "--p2p-bind-port=${P2P_BIND_PORT}", "--testnet-p2p-bind-port=${TEST_P2P_BIND_PORT}",
-#    "--rpc-bind-port=${RPC_BIND_PORT}", "--testnet-rpc-bind-port=${TEST_RPC_BIND_PORT}"
-#
-
-
+ENTRYPOINT ["itw3d", "--confirm-external-bind", "--log-level=${LOG_LEVEL}","--data-dir=${DATA_DIR}", "--testnet-data-dir=${TEST_DATA_DIR}",\
+"--rpc-bind-ip=${RPC_BIND_IP}","--p2p-bind-ip=${P2P_BIND_IP}","--p2p-bind-port=${P2P_BIND_PORT}", "--testnet-p2p-bind-port=${TEST_P2P_BIND_PORT}",\
+ "--rpc-bind-port=${RPC_BIND_PORT}", "--testnet-rpc-bind-port=${TEST_RPC_BIND_PORT}"]
 

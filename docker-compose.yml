@@ -6,7 +6,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
     volumes:
       - ~/itw3/data:/home/itw3/data
       - ~/itw3/conf:/home/itw3/conf
