@@ -6,7 +6,7 @@ ARG THREADS=2
 ARG TARGET=x86_64-unknown-linux-gnu
 WORKDIR /build
 COPY . .
-COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /build
+COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /build/contrib/depends
 
 RUN make -j${THREADS} depends target=x86_64-unknown-linux-gnu
 
@@ -22,8 +22,7 @@ RUN adduser --system --group --disabled-password itw3 && \
 RUN set -ex && \
     apt-get update && \
     apt-get --no-install-recommends --yes install ca-certificates && \
-    apt-get clean && \
-    rm -rf /var/lib/apt
+    apt-get clean
 
 
 COPY --from=builder --chmod=0777 --chown=itw3:itw3 /build/**/${BRANCH}/release/bin/ /usr/local/bin/
