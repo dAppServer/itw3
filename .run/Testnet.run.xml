@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Testnet" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+    <deployment type="dockerfile">
+      <settings>
+        <option name="imageTag" value="lthn/itw3:testnet" />
+        <option name="attachToContainerNeeded" value="true" />
+        <option name="buildCliOptions" value="--platform=linux/amd64" />
+        <option name="buildKitEnabled" value="true" />
+        <option name="command" value="--testnet" />
+        <option name="containerName" value="itw3d" />
+        <option name="commandLineOptions" value="" />
+        <option name="sourceFilePath" value="Dockerfile" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>

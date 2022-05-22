@@ -8,7 +8,13 @@ WORKDIR /build
 COPY . .
 COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /build/contrib/depends
 
-RUN make depends target=x86_64-unknown-linux-gnu
+RUN set -ex && \
+    git submodule init && git submodule update && \
+    if [ -z "${THREADS}" ] ; \
+    then make -j$(nproc) depends target=x86_64-unknown-linux-gnu ; \
+    else make -j${THREADS} depends target=x86_64-unknown-linux-gnu ; \
+    fi
+
 
 # runtime stage
 FROM debian:bullseye as container
