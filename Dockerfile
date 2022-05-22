@@ -8,8 +8,6 @@ WORKDIR /build
 COPY . .
 COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /build/contrib/depends
 
-RUN git submodule init && git submodule update
-
 RUN make -j${THREADS} depends target=x86_64-unknown-linux-gnu
 
 
