@@ -39,7 +39,7 @@ jobs:
         tags: ${{ env.IMG_TAG }},ghcr.io/${{ env.IMG_TAG }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
-    - uses: peter-evans/dockerhub-description@v2
+    - uses: peter-evans/dockerhub-description@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
