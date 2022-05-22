@@ -4,16 +4,11 @@ FROM lthn/build:compile as builder
 ARG IMG_PREFIX=lthn
 ARG THREADS=2
 ARG TARGET=x86_64-unknown-linux-gnu
-WORKDIR /src
+WORKDIR /build
 COPY . .
-COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /src/contrib/depends
+COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /build/contrib/depends
 
-RUN set -ex && \
-    git submodule init && git submodule update && \
-    if [ -z "${THREADS}" ] ; \
-    then make -j$(nproc) depends target=${TARGET} ; \
-    else make -j${THREADS} depends target=${TARGET} ; \
-    fi
+RUN make depends target=x86_64-unknown-linux-gnu
 
 # runtime stage
 FROM debian:bullseye as container
@@ -30,7 +25,7 @@ RUN set -ex && \
     rm -rf /var/lib/apt
 
 
-COPY --from=builder --chmod=0777 --chown=itw3:itw3 /src/build/${TARGET}/release/bin /usr/local/bin/
+COPY --from=builder --chmod=0777 --chown=itw3:itw3 /build/**/${BRANCH}/release/bin/ /usr/local/bin/
 
 # Create iTw3 user
 RUN adduser --system --group --disabled-password itw3 && \

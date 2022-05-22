@@ -3,7 +3,6 @@ services:
   itw3-chain-main:
     image: lthn/itw3:testnet
     network_mode: host
-    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
