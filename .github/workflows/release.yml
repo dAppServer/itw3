@@ -20,7 +20,7 @@ env:
     ccache --max-size=150M
     ccache --set-config=compression=true
 jobs:
-  linux:
+  build-ubuntu:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
