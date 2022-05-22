@@ -141,6 +141,11 @@ jobs:
           cmake --build build --target test
   source-archive:
     runs-on: ubuntu-20.04
+    needs:
+      - libwallet-ubuntu
+      - build-macos
+      - build-windows
+      - build-ubuntu
     steps:
       - uses: actions/checkout@v1
         with:
