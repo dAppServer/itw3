@@ -11,7 +11,6 @@ env:
   IMG: lthn/itw3
   TAG: testnet
   IMG_TAG: lthn/itw3:testnet
-
 jobs:
   build:
     runs-on: ubuntu-latest
