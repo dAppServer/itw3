@@ -41,7 +41,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha
       - uses: docker/setup-qemu-action@v2
-        if: matrix.os != "macos-latest"
+        if: matrix.os != 'macos-latest'
         with:
           platforms: all
       - uses: docker/setup-buildx-action@v2
