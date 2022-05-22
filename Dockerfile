@@ -9,11 +9,8 @@ COPY . .
 COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /build/contrib/depends
 
 RUN set -ex && \
-    git submodule init && git submodule update && \
-    if [ -z "${THREADS}" ] ; \
-    then make -j$(nproc) depends target=x86_64-unknown-linux-gnu ; \
-    else make -j${THREADS} depends target=x86_64-unknown-linux-gnu ; \
-    fi
+    git submodule init && git submodule update &&
+    make -j$(nproc) depends target=x86_64-unknown-linux-gnu
 
 
 # runtime stage
