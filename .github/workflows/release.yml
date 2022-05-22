@@ -20,6 +20,13 @@ env:
     ccache --max-size=150M
     ccache --set-config=compression=true
 jobs:
+  clear:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
   build-ubuntu:
     runs-on: ubuntu-20.04
     strategy:
