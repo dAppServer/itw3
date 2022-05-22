@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        build: [linux-x86_64, linux-i686, linux-armv8, linux-armv7, linux-armv6, win64, win32, mac-x86_64, freebsd-x86_64]
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: update apt
+        run: sudo apt update & sudo apt-get upgrade -y
+      - run: sudo apt update && sudo apt install build-essential cmake pkg-config libssl-dev libzmq3-dev libunbound-dev libsodium-dev libunwind8-dev liblzma-dev libreadline6-dev libldns-dev libexpat1-dev libpgm-dev qttools5-dev-tools libhidapi-dev libusb-1.0-0-dev libprotobuf-dev protobuf-compiler libudev-dev libboost-chrono-dev libboost-date-time-dev libboost-filesystem-dev libboost-locale-dev libboost-program-options-dev libboost-regex-dev libboost-serialization-dev libboost-system-dev libboost-thread-dev python3 ccache doxygen graphviz
+      - run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv lib/libg* /usr/lib/
+      - run: make -j2 release-static-${{ matrix.build }}
+
+
+  source-archive:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: archive
+        run: |
+          pip install git-archive-all
+          export VERSION="itw3-$(git describe)"
+          export OUTPUT="$VERSION.tar"
+          echo "OUTPUT=$OUTPUT" >> $GITHUB_ENV
+          /home/runner/.local/bin/git-archive-all --prefix "$VERSION/" --force-submodules "$OUTPUT"
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.OUTPUT }}
+          path: /home/runner/work/dappserver/itw3/${{ env.OUTPUT }}

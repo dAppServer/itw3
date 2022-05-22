@@ -26,9 +26,9 @@ RUN adduser --system --group --disabled-password itw3 \
     && chown -R itw3:itw3 /home/itw3 \
     && chown -R itw3:itw3 /home/itw3/wallet
 
-COPY --from=builder --chmod=0777 --chown=root:root /build/**/${BRANCH}/release/bin/ /usr/local/bin/
-
 USER itw3
+
+COPY --from=builder --chmod=0777 /build/**/${BRANCH}/release/bin/ /home/itw3/bin/
 
 # iTw3 User Folder
 VOLUME /home/itw3/data
