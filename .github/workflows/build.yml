@@ -2,15 +2,14 @@ name: TestNet
 
 on:
   push:
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
   pull_request:
     paths-ignore:
       - 'docs/**'
-      - '**/README.md'
-env:
-  CCACHE_TEMPDIR: /tmp/.ccache-temp
-  IMG: lthn/itw3
-  TAG: testnet
-  IMG_TAG: lthn/itw3:testnet
+      - '**/*.md'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,14 +19,10 @@ jobs:
         fetch-depth: 0
         submodules: recursive
     - uses: docker/setup-qemu-action@v2
+    - run: echo ${{ outputs.platforms }}
     - uses: docker/setup-buildx-action@v2
       with:
           install: true
-    - uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
     - uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -36,12 +31,7 @@ jobs:
       with:
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ${{ env.IMG_TAG }},ghcr.io/${{ env.IMG_TAG }}
+        tags: lthn/itw3:testnet
         cache-from: type=gha
         cache-to: type=gha,mode=max
-    - uses: peter-evans/dockerhub-description@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-        repository: ${{ env.IMG }}:${{ env.TAG}}
 
