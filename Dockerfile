@@ -15,25 +15,19 @@ RUN make -j${THREADS} depends target=x86_64-unknown-linux-gnu
 FROM debian:bullseye as container
 
 RUN adduser --system --group --disabled-password itw3 && \
-	mkdir -p /wallet /home/itw3 && \
+	mkdir -p /home/itw3/wallet && \
 	chown -R itw3:itw3 /home/itw3 && \
-	chown -R itw3:itw3 /wallet
+	chown -R itw3:itw3 /home/itw3/wallet
 
 RUN set -ex && \
     apt-get update && \
     apt-get --no-install-recommends --yes install ca-certificates && \
     apt-get clean
 
-
 COPY --from=builder --chmod=0777 --chown=itw3:itw3 /build/**/${BRANCH}/release/bin/ /usr/local/bin/
 
-# Create iTw3 user
-RUN adduser --system --group --disabled-password itw3 && \
-	mkdir -p /home/itw3/wallet && \
-	chown -R itw3:itw3 /home/itw3/wallet
-
 # iTw3 User Folder
-VOLUME /home/itw3
+VOLUME /home/itw3/data
 VOLUME /home/itw3/wallet
 
 ENV LOG_LEVEL 0
