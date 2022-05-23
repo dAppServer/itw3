@@ -17,6 +17,13 @@ env:
     ccache --set-config=compression=true
 
 jobs:
+  clear:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
   build-macos:
     runs-on: ubuntu-18.04
     env:
