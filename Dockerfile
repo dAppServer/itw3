@@ -1,20 +1,26 @@
 # syntax=docker/dockerfile:1
-FROM lthn/build:compile as builder
+FROM debian:bullseye as builder
+
+RUN apt-get update && apt-get -y upgrade
+RUN apt install -y build-essential cmake pkg-config libssl-dev libzmq3-dev libunbound-dev libsodium-dev libunwind8-dev \
+    liblzma-dev libreadline6-dev libldns-dev libexpat1-dev libpgm-dev qttools5-dev-tools libhidapi-dev libusb-1.0-0-dev \
+    libprotobuf-dev protobuf-compiler libudev-dev libboost-chrono-dev libboost-date-time-dev libboost-filesystem-dev \
+    libboost-locale-dev libboost-program-options-dev libboost-regex-dev libboost-serialization-dev libboost-system-dev \
+    libboost-thread-dev python3 ccache doxygen graphviz git
+
 
 WORKDIR /build
 
 COPY . .
-
-COPY --from=lthn/build:depends-x86_64-unknown-linux-gnu / /build/contrib/depends
 
 RUN pwd \
     && mem_avail_gb=$(( $(getconf _AVPHYS_PAGES) * $(getconf PAGE_SIZE) / (1024 * 1024 * 1024) )) \
     && make_job_slots=$(( $mem_avail_gb < 4 ? 1 : $mem_avail_gb / 4)) \
     && echo make_job_slots=$make_job_slots \
     && set -x \
-    && make -j $make_job_slots depends target=x86_64-unknown-linux-gnu
+    && make -j $make_job_slots release-static
 
-FROM debian:bullseye as container
+FROM debian:bullseye-slim as container
 
 RUN apt-get update \
     && apt-get -y upgrade \
@@ -37,6 +43,8 @@ VOLUME /home/itw3/wallet
 ENV DATA_DIR=/home/itw3/data TEST_DATA_DIR=/home/itw3/data/testnet
 
 ENV LOG_LEVEL 0
+
+ENV MAINNET=0 STAGNET=0 TESTNET=1
 
 # P2P live + testnet
 ENV P2P_BIND_IP=0.0.0.0 P2P_BIND_PORT=48772 TEST_P2P_BIND_PORT=38772
