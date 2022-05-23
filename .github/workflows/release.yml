@@ -1,12 +1,13 @@
-name: Release
+name: ci/gh-actions/cli
 
 on:
   push:
-    paths-ignore:
-      - '**.md'
   pull_request:
     paths-ignore:
-      - '**.md'
+      - 'docs/**'
+      - '**/README.md'
+
+# The below variables reduce repetitions across similar targets
 env:
   REMOVE_BUNDLED_BOOST : rm -rf /usr/local/share/boost
   BUILD_DEFAULT_LINUX: |
@@ -19,33 +20,30 @@ env:
   CCACHE_SETTINGS: |
     ccache --max-size=150M
     ccache --set-config=compression=true
+
 jobs:
-  clear:
-    runs-on: ubuntu-latest
+  build-macos:
+    runs-on: macos-latest
+    env:
+      CCACHE_TEMPDIR: /tmp/.ccache-temp
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+      - uses: actions/checkout@v1
         with:
-          access_token: ${{ github.token }}
-  build-ubuntu:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        build: [linux-x86_64, linux-i686, linux-armv8, linux-armv7, linux-armv6, freebsd-x86_64]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
           submodules: recursive
-      - name: update apt
-        run: sudo apt update & sudo apt-get upgrade -y
-      - run: sudo apt update && sudo apt install build-essential cmake pkg-config libssl-dev libzmq3-dev libunbound-dev libsodium-dev libunwind8-dev liblzma-dev libreadline6-dev libldns-dev libexpat1-dev libpgm-dev qttools5-dev-tools libhidapi-dev libusb-1.0-0-dev libprotobuf-dev protobuf-compiler libudev-dev libboost-chrono-dev libboost-date-time-dev libboost-filesystem-dev libboost-locale-dev libboost-program-options-dev libboost-regex-dev libboost-serialization-dev libboost-system-dev libboost-thread-dev python3 ccache doxygen graphviz
-      - run: sudo apt-get install -y libgtest-dev gcc-aarch64-linux-gnu
-      - run: cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv lib/libg* /usr/lib/
-      - run: make -j2 release-static-${{ matrix.build }}
+      - uses: actions/cache@v2
+        with:
+          path: /Users/runner/Library/Caches/ccache
+          key: ccache-${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: ccache-${{ runner.os }}-build-
+      - name: install dependencies
+        run: HOMEBREW_NO_AUTO_UPDATE=1 brew install boost hidapi openssl zmq libpgm miniupnpc ldns expat libunwind-headers protobuf ccache
+      - name: build
+        run: |
+          ${{env.CCACHE_SETTINGS}}
+          make -j3
+
   build-windows:
-    runs-on: windows-2019
+    runs-on: windows-latest
     env:
       CCACHE_TEMPDIR: C:\Users\runneradmin\.ccache-temp
       CCACHE_DIR: C:\Users\runneradmin\.ccache
@@ -69,25 +67,39 @@ jobs:
         run: |
           ${{env.CCACHE_SETTINGS}}
           make release-static-win64 -j2
-  build-macos:
-    runs-on: macos-latest
+
+  # See the OS labels and monitor deprecations here:
+  # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+
+  build-ubuntu:
+    runs-on: ${{ matrix.os }}
     env:
       CCACHE_TEMPDIR: /tmp/.ccache-temp
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-18.04]
     steps:
       - uses: actions/checkout@v1
         with:
           submodules: recursive
       - uses: actions/cache@v2
         with:
-          path: /Users/runner/Library/Caches/ccache
-          key: ccache-${{ runner.os }}-build-${{ github.sha }}
-          restore-keys: ccache-${{ runner.os }}-build-
-      - name: install dependencies
-        run: HOMEBREW_NO_AUTO_UPDATE=1 brew install boost hidapi openssl zmq libpgm miniupnpc ldns expat libunwind-headers protobuf ccache
+          path: ~/.ccache
+          key: ccache-${{ runner.os }}-build-${{ matrix.os }}-${{ github.sha }}
+          restore-keys: ccache-${{ runner.os }}-build-${{ matrix.os }}
+      - name: remove bundled boost
+        run: ${{env.REMOVE_BUNDLED_BOOST}}
+      - name: set apt conf
+        run: ${{env.APT_SET_CONF}}
+      - name: update apt
+        run: sudo apt update
+      - name: install monero dependencies
+        run: ${{env.APT_INSTALL_LINUX}}
       - name: build
         run: |
           ${{env.CCACHE_SETTINGS}}
-          make -j3
+          ${{env.BUILD_DEFAULT_LINUX}}
+
   libwallet-ubuntu:
     runs-on: ubuntu-latest
     env:
@@ -114,6 +126,7 @@ jobs:
           ${{env.CCACHE_SETTINGS}}
           cmake .
           make wallet_api -j3
+
   test-ubuntu:
     needs: build-ubuntu
     runs-on: ubuntu-latest
@@ -146,13 +159,12 @@ jobs:
           ${{env.CCACHE_SETTINGS}}
           ${{env.BUILD_DEFAULT_LINUX}}
           cmake --build build --target test
+
+  # ARCH="default" (not "native") ensures, that a different execution host can execute binaries compiled elsewhere.
+  # BUILD_SHARED_LIBS=ON speeds up the linkage part a bit, reduces size, and is the only place where the dynamic linkage is tested.
+
   source-archive:
     runs-on: ubuntu-20.04
-    needs:
-      - libwallet-ubuntu
-      - build-macos
-      - build-windows
-      - build-ubuntu
     steps:
       - uses: actions/checkout@v1
         with:
