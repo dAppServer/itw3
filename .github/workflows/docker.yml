@@ -1,4 +1,4 @@
-name: TestNet
+name: Docker
 
 on:
   push:
@@ -50,7 +50,7 @@ jobs:
           context: .
           file: Dockerfile
           platforms: ${{ steps.buildx.outputs.platforms }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          push: startsWith(github.ref, 'refs/tags/v')
+          tags: lthn/itw3:testnet
           labels: ${{ steps.meta.outputs.labels }}
 
