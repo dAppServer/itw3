@@ -108,5 +108,5 @@ jobs:
         with:
           name: ${{ matrix.toolchain.name }}
           path: |
-            /home/runner/work/dappserver/itw3/build/${{ matrix.toolchain.host }}/release/bin/itw3-wallet-cli*
-            /home/runner/work/dappserver/itw3/build/${{ matrix.toolchain.host }}/release/bin/itw3d*
+            /home/runner/work/itw3/itw3/build/${{ matrix.toolchain.host }}/release/bin/itw3-wallet-cli*
+            /home/runner/work/itw3/itw3/build/${{ matrix.toolchain.host }}/release/bin/itw3d*
