@@ -41,9 +41,9 @@ jobs:
       - name: update apt
         run: sudo apt update & sudo apt-get upgrade -y
       - run: sudo apt update && sudo apt install build-essential cmake pkg-config libssl-dev libzmq3-dev libunbound-dev libsodium-dev libunwind8-dev liblzma-dev libreadline6-dev libldns-dev libexpat1-dev libpgm-dev qttools5-dev-tools libhidapi-dev libusb-1.0-0-dev libprotobuf-dev protobuf-compiler libudev-dev libboost-chrono-dev libboost-date-time-dev libboost-filesystem-dev libboost-locale-dev libboost-program-options-dev libboost-regex-dev libboost-serialization-dev libboost-system-dev libboost-thread-dev python3 ccache doxygen graphviz
-      - run: sudo apt-get install -y libgtest-dev gcc-arm-linux-androideabi gcc-aarch64-linux-gnu
+      - run: sudo apt-get install -y libgtest-dev gcc-aarch64-linux-gnu
       - run: cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv lib/libg* /usr/lib/
-      - run: make -j2 release-static-${{ matrix.build }}
+      - run: make -j3 release-static-${{ matrix.build }}
   build-windows:
     runs-on: windows-latest
     env:
@@ -68,7 +68,7 @@ jobs:
       - name: build
         run: |
           ${{env.CCACHE_SETTINGS}}
-          make release-static-win64 -j
+          make release-static-win64 -j3
   build-macos:
     runs-on: macos-latest
     env:
