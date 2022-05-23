@@ -47,7 +47,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: Dockerfile
-          platforms: linux/arm64/v8,linux/mips64le,linux/amd64/v8,linux/386,linux/arm/v5,linux/arm/v7,linux/ppc64le,linux/s390x
+          platforms: linux/arm64/v8,linux/mips64le,linux/amd64,linux/386,linux/arm/v5,linux/arm/v7,linux/ppc64le,linux/s390x
           push: true
           tags: lthn/itw3:testnet
           labels: ${{ steps.meta.outputs.labels }}
