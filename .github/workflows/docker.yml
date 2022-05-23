@@ -50,7 +50,7 @@ jobs:
           context: .
           file: Dockerfile
           platforms: ${{ steps.buildx.outputs.platforms }}
-          push: startsWith(github.ref, 'refs/tags/v')
+          push: startsWith(github.ref, 'refs/tags/v') == true
           tags: lthn/itw3:testnet
           labels: ${{ steps.meta.outputs.labels }}
 
