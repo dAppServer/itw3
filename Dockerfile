@@ -14,7 +14,7 @@ RUN pwd \
     && set -x \
     && make -j $make_job_slots depends target=x86_64-unknown-linux-gnu
 
-FROM debian:bullseye as container
+FROM ubuntu:20.04 as container
 
 RUN apt-get update \
     && apt-get -y upgrade \
