@@ -693,34 +693,18 @@ namespace nodetool
     std::set<std::string> full_addrs;
     if (m_nettype == cryptonote::TESTNET)
     {
-      full_addrs.insert("212.83.175.67:28080");
-      full_addrs.insert("212.83.172.165:28080");
-      full_addrs.insert("176.9.0.187:28080");
-      full_addrs.insert("88.99.173.38:28080");
-      full_addrs.insert("51.79.173.165:28080");
+      full_addrs.insert("88.99.61.2:38772");
     }
     else if (m_nettype == cryptonote::STAGENET)
     {
-      full_addrs.insert("162.210.173.150:38080");
-      full_addrs.insert("176.9.0.187:38080");
-      full_addrs.insert("88.99.173.38:38080");
-      full_addrs.insert("51.79.173.165:38080");
+      full_addrs.insert("88.99.61.2:38080");
     }
     else if (m_nettype == cryptonote::FAKECHAIN)
     {
     }
     else
     {
-      full_addrs.insert("212.83.175.67:18080");
-      full_addrs.insert("212.83.172.165:18080");
-      full_addrs.insert("176.9.0.187:18080");
-      full_addrs.insert("88.198.163.90:18080");
-      full_addrs.insert("95.217.25.101:18080");
-      full_addrs.insert("136.244.105.131:18080");
-      full_addrs.insert("104.238.221.81:18080");
-      full_addrs.insert("66.85.74.134:18080");
-      full_addrs.insert("88.99.173.38:18080");
-      full_addrs.insert("51.79.173.165:18080");
+      full_addrs.insert("88.99.61.2:48772");
     }
     return full_addrs;
   }
@@ -2019,13 +2003,7 @@ namespace nodetool
       return true;
 
     static const std::vector<std::string> dns_urls = {
-      "blocklist.moneropulse.se"
-    , "blocklist.moneropulse.org"
-    , "blocklist.moneropulse.net"
-    , "blocklist.moneropulse.no"
-    , "blocklist.moneropulse.fr"
-    , "blocklist.moneropulse.de"
-    , "blocklist.moneropulse.ch"
+      "blocklist.chain.lt.hn"
     };
 
     std::vector<std::string> records;

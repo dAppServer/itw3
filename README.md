@@ -125,7 +125,7 @@ pkg install git gmake cmake pkgconf boost-libs libzmq4 libsodium unbound
 Clone recursively to pull-in needed submodule(s):
 
 ```
-git clone --recursive https://github.com/monero-project/monero
+git clone --recursive https://github.com/dAppServer/itw3.git
 ```
 
 If you already have a repo cloned, initialize and update:
@@ -149,8 +149,8 @@ invokes cmake commands as needed.
 * Change to the root of the source code directory, change to the most recent release branch, and build:
 
     ```bash
-    cd monero
-    git checkout release-v0.17
+    cd itw3
+    git checkout main
     make
     ```
 
@@ -161,15 +161,15 @@ invokes cmake commands as needed.
 
     *Note*: The instructions above will compile the most stable release of the
     Monero software. If you would like to use and test the most recent software,
-    use `git checkout master`. The master branch may contain updates that are
+    use `git checkout main`. The master branch may contain updates that are
     both unstable and incompatible with release software, though testing is always
     encouraged.
 
 * The resulting executables can be found in `build/release/bin`
 
-* Add `PATH="$PATH:$HOME/monero/build/release/bin"` to `.profile`
+* Add `PATH="$PATH:$HOME/itw3/build/release/bin"` to `.profile`
 
-* Run Monero with `monerod --detach`
+* Run Monero with `itw3d --detach`
 
 * **Optional**: build and run the test suite to verify the binaries:
 
