@@ -694,10 +694,12 @@ namespace nodetool
     if (m_nettype == cryptonote::TESTNET)
     {
       full_addrs.insert("88.99.61.2:38772");
+      full_addrs.insert("135.181.78.87:38772");
     }
     else if (m_nettype == cryptonote::STAGENET)
     {
       full_addrs.insert("88.99.61.2:38080");
+      full_addrs.insert("135.181.78.87:38080");
     }
     else if (m_nettype == cryptonote::FAKECHAIN)
     {
@@ -705,6 +707,7 @@ namespace nodetool
     else
     {
       full_addrs.insert("88.99.61.2:48772");
+      full_addrs.insert("135.181.78.87:48772");
     }
     return full_addrs;
   }

@@ -301,7 +301,7 @@ namespace nodetool
   private:
     const std::vector<std::string> m_seed_nodes_list =
     { "seed.lethean.io",
-      "seed.lthn.io"
+      "seed.chain.lthn.io"
     };
 
     bool islimitup=false;
