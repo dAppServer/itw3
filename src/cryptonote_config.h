@@ -224,7 +224,7 @@ namespace config
     uint16_t const RPC_DEFAULT_PORT = 48782;
     uint16_t const ZMQ_RPC_DEFAULT_PORT = 48792;
     boost::uuids::uuid const NETWORK_ID = { {
-                                                    0x8c, 0x40, 0x3d, 0x04, 0x8f, 0x82, 0x2c, 0x3d, 0x82, 0x5f, 0x2c, 0x1a, 0x44, 0x32, 0x7d, 0x83
+                                                    0x40, 0x40, 0x3d, 0x04, 0x8f, 0x82, 0x2c, 0x3d, 0x82, 0x5f, 0x2c, 0x1a, 0x44, 0x32, 0x7d, 0x83
                                                     } };
     std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
     uint32_t const GENESIS_NONCE = 70;
@@ -263,7 +263,7 @@ namespace config
         uint16_t const RPC_DEFAULT_PORT = 38782;
         uint16_t const ZMQ_RPC_DEFAULT_PORT = 38792;
         boost::uuids::uuid const NETWORK_ID = {{
-                                                0x8c, 0x40, 0x3d, 0x04, 0x8f, 0x82, 0x2c, 0x3d, 0x82, 0x5f, 0x2c, 0x1a, 0x44, 0x32, 0x7d, 0x83} }; // Bender's daydream
+                                                0x40, 0x40, 0x3d, 0x04, 0x8f, 0x82, 0x2c, 0x3d, 0x82, 0x5f, 0x2c, 0x1a, 0x44, 0x32, 0x7d, 0x83} }; // Bender's daydream
         std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
         uint32_t const GENESIS_NONCE = 10001;
     }
