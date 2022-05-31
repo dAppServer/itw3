@@ -108,8 +108,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-          chmod +x /home/runner/work/itw3/itw3/build/${{ matrix.toolchain.host }}/release/bin/*
-          (cd  /home/runner/work/itw3/itw3/build/${{ matrix.toolchain.host }}/release/bin && tar -cvf . itw3-${GITHUB_REF/refs\/tags\//}-${{ matrix.toolchain.host }}.tar)
+          chmod +x ${{ github.workspace }}/build/${{ matrix.toolchain.host }}/release/bin/*
+          (cd  ${{ github.workspace }}/build/${{ matrix.toolchain.host }}/release/bin && tar -cvf itw3-${GITHUB_REF/refs\/tags\//}-${{ matrix.toolchain.host }}.tar *)
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -119,5 +119,4 @@ jobs:
         with:
           name: ${{ matrix.toolchain.name }}
           path: |
-            /home/runner/work/itw3/itw3/build/${{ matrix.toolchain.host }}/release/bin/itw3-wallet-cli*
-            /home/runner/work/itw3/itw3/build/${{ matrix.toolchain.host }}/release/bin/itw3d*
+            ${{ github.workspace }}/build/${{ matrix.toolchain.host }}/release/bin/*
