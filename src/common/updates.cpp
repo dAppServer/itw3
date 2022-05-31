@@ -46,7 +46,7 @@ namespace tools
 
     // All four MoneroPulse domains have DNSSEC on and valid
     static const std::vector<std::string> dns_urls = {
-        "updates.chain.lt.hn",
+        "updates.chain.lethean.io",
         "updates.chain.lthn.io"
     };
 
@@ -97,7 +97,7 @@ namespace tools
 
   std::string get_update_url(const std::string &software, const std::string &subdir, const std::string &buildtag, const std::string &version, bool user)
   {
-    const char *base = user ? "https://downloads.chain.lt.hn/" : "https://updates.chain.lt.hn/";
+    const char *base = user ? "https://downloads.chain.lthn.io/" : "https://updates.chain.lthn.io/";
 #ifdef _WIN32
     static const char *extension = strncmp(buildtag.c_str(), "chain", 6) ? (strncmp(buildtag.c_str(), "install-", 8) ? ".zip" : ".exe") : ".tar.bz2";
 #elif defined(__APPLE__)

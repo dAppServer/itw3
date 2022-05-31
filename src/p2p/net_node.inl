@@ -2003,7 +2003,7 @@ namespace nodetool
       return true;
 
     static const std::vector<std::string> dns_urls = {
-      "blocklist.chain.lt.hn"
+      "blocklist.chain.lthn.io"
     };
 
     std::vector<std::string> records;

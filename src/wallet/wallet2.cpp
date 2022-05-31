@@ -14023,7 +14023,7 @@ uint64_t wallet2::get_segregation_fork_height() const
   {
     // All four iTw3Pulse domains have DNSSEC on and valid
     static const std::vector<std::string> dns_urls = {
-        "segheights.chain.lt.hn",
+        "segheights.chain.lethean.io",
         "segheights.chain.lthn.io"
     };
 

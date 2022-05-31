@@ -284,15 +284,15 @@ namespace cryptonote
 
     // All four MoneroPulse domains have DNSSEC on and valid
     static const std::vector<std::string> dns_urls = {
-            "checkpoints.chain.lthn.io", "checkpoints.chain.lt.hn"
+            "checkpoints.chain.lthn.io", "checkpoints.chain.lethean.io"
     };
 
     static const std::vector<std::string> testnet_dns_urls = {
-            "testpoints.chain.lt.hn", "testpoints.chain.lthn.io"
+            "testpoints.chain.lethean.io", "testpoints.chain.lthn.io"
     };
 
     static const std::vector<std::string> stagenet_dns_urls = {
-            "stagenetpoints.chain.lt.hn", "stagenetpoints.chain.lthn.io"
+            "stagenetpoints.chain.lethean.io", "stagenetpoints.chain.lthn.io"
     };
 
     if (!tools::dns_utils::load_txt_records_from_dns(records, nettype == TESTNET ? testnet_dns_urls : nettype == STAGENET ? stagenet_dns_urls : dns_urls))
