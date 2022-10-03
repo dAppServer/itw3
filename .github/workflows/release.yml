@@ -47,7 +47,7 @@ jobs:
       - name: build
         run: |
           ${{env.CCACHE_SETTINGS}}
-          make -j3
+          make -j2
 
   build-windows:
     runs-on: windows-latest
@@ -132,7 +132,7 @@ jobs:
         run: |
           ${{env.CCACHE_SETTINGS}}
           cmake .
-          make wallet_api -j3
+          make wallet_api -j2
 
   # ARCH="default" (not "native") ensures, that a different execution host can execute binaries compiled elsewhere.
   # BUILD_SHARED_LIBS=ON speeds up the linkage part a bit, reduces size, and is the only place where the dynamic linkage is tested.
